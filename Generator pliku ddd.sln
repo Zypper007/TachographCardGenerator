@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator pliku ddd", "Gene
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api.dane.gov.pl", "api.dane.gov.pl\api.dane.gov.pl.csproj", "{AB890275-79A8-4FCE-890C-C6BAB004309B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TachographCardStructure", "..\TachographCardStructure\TachographCardStructure.csproj", "{26B2ABE8-48E6-4389-9E89-DCDECBAF48BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TachographCardStructure", "TachographCardStructure\TachographCardStructure.csproj", "{6EDEE51D-9AD1-4331-8595-20E8C92EC297}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "..\Tests\Tests.csproj", "{255B212B-E142-42D1-8D2E-146D9F5AE82B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{255B212B-E142-42D1-8D2E-146D9F5AE82B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,10 @@ Global
 		{AB890275-79A8-4FCE-890C-C6BAB004309B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB890275-79A8-4FCE-890C-C6BAB004309B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB890275-79A8-4FCE-890C-C6BAB004309B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26B2ABE8-48E6-4389-9E89-DCDECBAF48BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26B2ABE8-48E6-4389-9E89-DCDECBAF48BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26B2ABE8-48E6-4389-9E89-DCDECBAF48BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26B2ABE8-48E6-4389-9E89-DCDECBAF48BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EDEE51D-9AD1-4331-8595-20E8C92EC297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EDEE51D-9AD1-4331-8595-20E8C92EC297}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EDEE51D-9AD1-4331-8595-20E8C92EC297}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EDEE51D-9AD1-4331-8595-20E8C92EC297}.Release|Any CPU.Build.0 = Release|Any CPU
 		{255B212B-E142-42D1-8D2E-146D9F5AE82B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{255B212B-E142-42D1-8D2E-146D9F5AE82B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{255B212B-E142-42D1-8D2E-146D9F5AE82B}.Release|Any CPU.ActiveCfg = Release|Any CPU
