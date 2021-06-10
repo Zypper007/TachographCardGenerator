@@ -13,7 +13,6 @@ namespace Tests
     {
         static void Main(string[] args)
         {
-            testFile();
             Console.ReadKey(); ;
             printStruct(new byte[] { }, 16);
 
@@ -77,21 +76,10 @@ namespace Tests
 
         }
 
-        static void testFile(string src = @"C:\Users\Pan Patryk\Downloads\C_20210423_115927_M_Kowalskii_11111111110000")
-        {
-            var test = (new TestFile()).ToByte();
-            var orgin = File.ReadAllBytes(src);
-            testFile(test, orgin);
-        }
-
+       
 
         static void printStruct(byte[] bytes, int width = 8)
         {
-            if(bytes.Length == 0)
-            {
-                var t = new TestFile();
-                bytes = t.ToByte();
-            }
 
             var str = new StringBuilder();
             uint row = 0;
