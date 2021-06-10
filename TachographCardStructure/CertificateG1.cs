@@ -13,7 +13,7 @@ namespace TachographCardStructure
 
         public byte[] Issuer { get; } = new byte[8] ;
 
-        public CertificateG1(byte[] id, byte encrypted, byte[] sign, byte[] publicRestKey, byte[] issuer ) : base (id, encrypted)
+        public CertificateG1(byte[] id, byte[] sign, byte[] publicRestKey, byte[] issuer ) : base (id)
         {
             Array.Copy(sign, Sign, 128);
             Array.Copy(publicRestKey, PublicKeyRest, 58);

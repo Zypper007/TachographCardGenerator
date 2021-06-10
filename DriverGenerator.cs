@@ -8,21 +8,22 @@ using api.dane.gov.pl;
 
 namespace Generator_pliku_ddd
 {
-    class PeopleGenerator
+    public class DriverGenerator
     {
+
         private ClientApi _api;
         private Random _rand;
 
-        private PeopleGenerator()
+        private DriverGenerator()
         {
             this._api = new ClientApi();
-            this._rand = new Random();
+            this._rand = RandomSingleton.GetInstance();
         }
 
-        public async static Task<List<Person>> GeneretePeple(uint amount, double frequency)
+        public static async Task<List<Driver>> Generete(uint amount, double frequency)
         {
 
-            var generator = new PeopleGenerator();
+            var generator = new DriverGenerator();
 
             var manFreaq = (uint)(amount * frequency);
             var womanFreaq = amount - manFreaq;
@@ -36,13 +37,13 @@ namespace Generator_pliku_ddd
             return generator.Mix(menNames, menLastnames, womenNames, womenLastnames);
         }
 
-        private List<Person> Mix (List<string> m_name, List<string> m_lastname, List<string> w_name, List<string> w_lastname)
+        private List<Driver> Mix(List<string> m_name, List<string> m_lastname, List<string> w_name, List<string> w_lastname)
         {
-            var men = _createPeople(m_name, m_lastname);
-            var women = _createPeople(w_name, w_lastname);
+            var men = _createDriver(m_name, m_lastname);
+            var women = _createDriver(w_name, w_lastname);
 
             var count = men.Count + women.Count;
-            var people = new List<Person>();
+            var Drivers = new List<Driver>();
 
             for(int i = 0; i < count; i++)
             {
@@ -52,22 +53,22 @@ namespace Generator_pliku_ddd
                 {
                     idx -= men.Count;
 
-                    people.Add(women[idx]);
+                    Drivers.Add(women[idx]);
                     women.RemoveAt(idx);
                 }
                 else
                 {
-                    people.Add(men[idx]);
+                    Drivers.Add(men[idx]);
                     men.RemoveAt(idx);
 
                 }
             }
-            return people;
+            return Drivers;
         }
 
-        private List<Person> _createPeople(List<string> name, List<string> lastname)
+        private List<Driver> _createDriver(List<string> name, List<string> lastname)
         {
-            var people = new List<Person>();
+            var Drivers = new List<Driver>();
 
             var count = name.Count;
 
@@ -76,13 +77,13 @@ namespace Generator_pliku_ddd
                 var n_idx = name.Count > 1 ? _rand.Next(name.Count - 1) : 0;
                 var l_idx = lastname.Count > 1 ? _rand.Next(lastname.Count - 1) : 0;
 
-                people.Add(new Person(name[n_idx], lastname[l_idx], _rand));
+                Drivers.Add(new Driver(name[n_idx], lastname[l_idx]));
            
                 name.RemoveAt(n_idx);
                 lastname.RemoveAt(l_idx);
             }
 
-            return people;
+            return Drivers;
         }
     }
 }

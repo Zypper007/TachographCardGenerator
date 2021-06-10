@@ -8,37 +8,52 @@ namespace TachographCardStructure
 {
     public class CardIccIdentification : MainFile
     {
-        public byte clockStop { get; set; } = 0x00;// 1byte
-        public ExtendedSerialNumber CardExtendedSerialNumber { get; set; } = new ExtendedSerialNumber(); // 8bytes
+        public byte ClockStop { get; set; } = 0x00;// 1byte
+        public ExtendedSerialNumber CardExtendedSerialNumber { get; set; } // 8bytes
         public IA5String CardApprovalNumber { get; set; } = new IA5String(8); // 8 bytes
         public byte CardPersonaliserID { get; set; } = 0x89; // 1 byte
-        public EmbedderIcAssemblerID EmbedderIcAssemblerID { get; set; } = new EmbedderIcAssemblerID(); // 5bytes
-        public byte[] icIdentifier = new byte[] { 0x15, 0x37 }; // 2bytes
+        public EmbedderIcAssemblerID EmbedderIcAssemblerID { get; set; } // 5bytes
+        public ushort IcIdentifier; // 2bytes
 
-        protected ushort plyloadSize = 25;
-        protected byte[] id = new byte[] { 0x00, 0x02 };
-        protected bool encrpted = false;
-
-        public CardIccIdentification() : base(new byte[] {0x00, 0x02}, 0x00)
+        public CardIccIdentification(byte clockStop, 
+            ExtendedSerialNumber cardExtendedSerialNumber, 
+            string cardApprovalNumber,
+            byte cardPersonalizerID,
+            EmbedderIcAssemblerID embedderIcAssembledID,
+            ushort icIdentifier) : base(new byte[] {0x00, 0x02})
         {
+            ClockStop = clockStop;
+            CardExtendedSerialNumber = cardExtendedSerialNumber;
+            CardApprovalNumber.SetText(cardApprovalNumber);
+            CardPersonaliserID = cardPersonalizerID;
+            EmbedderIcAssemblerID = embedderIcAssembledID;
+            IcIdentifier = icIdentifier;
             CardApprovalNumber.SetText("e1 221  ");
         }
 
         public override ushort GetLength()
         {
-            return (ushort)(1 + CardExtendedSerialNumber.GetLength() + CardApprovalNumber.GetLength() + 1 + EmbedderIcAssemblerID.GetLength() + 2);
+            return Encrypted == 0x01 ? base.GetLength() : (ushort)(1 + 
+                CardExtendedSerialNumber.GetLength()
+                + CardApprovalNumber.GetLength()
+                + 1 
+                + EmbedderIcAssemblerID.GetLength() 
+                + 2);
         }
 
         override public byte[] ToByte()
         {
-            return new List<byte>()
+            var icI_bytes = BitConverter.GetBytes(IcIdentifier);
+            if (BitConverter.IsLittleEndian) icI_bytes = icI_bytes.Reverse().ToArray() ;
+
+            return Encrypted == 0x01 ? base.ToByte() : new List<byte>()
                 .Concat(base.ToByte())
-                .Append(clockStop)
+                .Append(ClockStop)
                 .Concat(CardExtendedSerialNumber.ToByte())
                 .Concat(CardApprovalNumber.ToByte())
                 .Append(CardPersonaliserID)
                 .Concat(EmbedderIcAssemblerID.ToByte())
-                .Concat(icIdentifier)
+                .Concat(icI_bytes)
                 .ToArray();
         }
     }

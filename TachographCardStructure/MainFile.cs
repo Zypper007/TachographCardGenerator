@@ -7,27 +7,48 @@ namespace TachographCardStructure
 {
     abstract public class MainFile: IToByte, IGetLength
     {
-        public MainFile(byte[] id, byte encrypted)
+
+        public byte[] ID { get; private set; } = new byte[2];
+        public byte Encrypted { get; private set; }
+        public byte[] EncryptedData { get; protected set; }
+
+        public MainFile(byte[] id)
         {
             ID[0] = id[0];
             ID[1] = id[1];
-            Encrypted = encrypted;
+            Encrypted = 0x00;
         }
-        protected byte[] ID { get; set; } = new byte[2];
-        protected byte Encrypted { get; set; }
 
-        abstract public ushort GetLength();
+        public MainFile(byte[] id, byte[] encryptedData)
+        {
+            ID[0] = id[0];
+            ID[1] = id[1];
+            Encrypted = 0x01;
+            EncryptedData = new byte[encryptedData.Length];
+            Array.Copy(encryptedData, EncryptedData, EncryptedData.Length);
+        }
+        
+        virtual public ushort GetLength()
+        {
+            return (ushort)EncryptedData.Length;
+        }
 
         virtual public byte[] ToByte()
         {
             var length = BitConverter.GetBytes(GetLength());
             if (BitConverter.IsLittleEndian) length = length.Reverse().ToArray();
 
-            return new List<byte>()
+            var bytes = new List<byte>()
                 .Concat(ID)
                 .Append(Encrypted)
-                .Concat(length)
-                .ToArray();
+                .Concat(length);
+
+            if (Encrypted == 0x01)
+                bytes = bytes.Concat(this.EncryptedData);
+
+            return bytes.ToArray();
         }
+
+        public static implicit operator byte[](MainFile mf) => mf.ToByte();
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TachographCardStructure.Types;
 using System.Linq;
 
-namespace TachographCardStructure
+namespace TachographCardStructure.Types
 {
     // 8bytes
     public class ExtendedSerialNumber: IToByte, IGetLength
@@ -14,12 +13,11 @@ namespace TachographCardStructure
         public EquipmentType Type { get; set; } // 1byte
         public byte ManufacturerCode { get; set; }  // 1byte
 
-        public ExtendedSerialNumber(uint serialNumber = 222042148, int monthYear = 0115, EquipmentType type = null, byte manufactureCode = 0x89 )
+        public ExtendedSerialNumber(uint serialNumber, string monthYear, EquipmentType type, byte manufactureCode  )
         {
             SerialNumber = serialNumber;
             MonthYear.SetNumber(monthYear);
-            if (type is EquipmentType) Type = type;
-            else  Type = new EquipmentType(0x90);
+            Type = type;
             ManufacturerCode = manufactureCode;
 
         }

@@ -4,7 +4,7 @@ using System.Text;
 using TachographCardStructure.Types;
 using System.Linq;
 
-namespace TachographCardStructure
+namespace TachographCardStructure.Types
 {
     // 5 bytes
     public class EmbedderIcAssemblerID: IToByte, IGetLength
@@ -13,7 +13,7 @@ namespace TachographCardStructure
         public BCDString ModuleEmbedder { get; set; } = new BCDString(2); // 2bytes
         public byte ManufacturerInformatin { get; set; } // 1byte
 
-        public EmbedderIcAssemblerID(string countryCode = "PL", int moduleEmbedder = 3839, byte manufacturerInformation = 0x78)
+        public EmbedderIcAssemblerID(string countryCode, string moduleEmbedder , byte manufacturerInformation)
         {
             CountryCode.SetText(countryCode);
             ModuleEmbedder.SetNumber(moduleEmbedder);
@@ -33,7 +33,7 @@ namespace TachographCardStructure
 
         public ushort GetLength()
         {
-            return 5;
+            return (ushort)(CountryCode.GetLength() + ModuleEmbedder.GetLength() + 1);
         }
     }
 }

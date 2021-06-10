@@ -9,34 +9,26 @@ namespace TachographCardStructure.Types
     {
         private static Encoding ASCII = Encoding.ASCII;
         private byte[] _b;
-        private byte[] _bytes {
-            get => _b; 
-            set
-            {
-                foreach (byte b in value)
-                    if (b > 127) throw new Exception($"IA5Strings byte[{b}] over scale");
 
-                var size = MaxLength > 0 ? MaxLength : value.Length;
-                _b = new byte[size];
-                Array.Copy(value, _b, size);
-            }
-        } 
 
-        public int MaxLength;
-
-        public IA5String(int MaxLength)
+        public IA5String(int MaxLength, string text="")
         {
-            this.MaxLength = MaxLength;
+            _b = new byte[MaxLength];
+
+            for (var i = 0; i < _b.Length; i++) _b[i] = 0x20;
+
+            if (text != "") SetText(text);
         }
 
-        public IA5String(string text)
-        {
-            SetText(text);
-        }
 
         public void SetText(string text)
         {
-            _bytes = ASCII.GetBytes(text);
+            var _bytes = ASCII.GetBytes(text);
+
+            foreach (byte b in _bytes) if (b > 127) throw new Exception($"IA5Strings byte[{b}] over scale");
+
+            var size = _bytes.Length > _b.Length ? _b.Length : _bytes.Length;
+            Array.Copy(_bytes, _b, size);
         }
 
         public override string ToString()
@@ -51,7 +43,7 @@ namespace TachographCardStructure.Types
 
         public ushort GetLength()
         {
-            return (ushort)_bytes.Length;
+            return (ushort)_b.Length;
         }
     }
 }

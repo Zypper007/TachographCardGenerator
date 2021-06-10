@@ -5,9 +5,14 @@ using System.Text;
 
 namespace TachographCardStructure.Types
 {
-    public abstract class NO2bytes : IToByte, IGetLength
+    public class NO2bytes : IToByte, IGetLength
     {
-        public ushort No { get; set; }
+        public ushort No { get; internal set; }
+
+        public NO2bytes(ushort no)
+        {
+            No = no;
+        }
 
         public ushort GetLength()
         {
@@ -20,5 +25,7 @@ namespace TachographCardStructure.Types
             if (BitConverter.IsLittleEndian) bs = bs.Reverse().ToArray();
             return bs;
         }
+
+        public static implicit operator int(NO2bytes no) => no.No;
     }
 }

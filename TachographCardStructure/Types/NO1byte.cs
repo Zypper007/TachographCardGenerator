@@ -4,9 +4,15 @@ using System.Text;
 
 namespace TachographCardStructure.Types
 {
-    public abstract class NO1byte: IToByte, IGetLength
+    public class NO1byte: IToByte, IGetLength
     {
-        public byte No { get; set; }
+        public byte No { get; internal set; }
+
+
+        public NO1byte(byte no)
+        {
+            No = no;
+        }
 
         public byte[] ToByte()
         {
@@ -17,5 +23,7 @@ namespace TachographCardStructure.Types
         {
             return 1;
         }
+
+        public static implicit operator int(NO1byte no) => no.No;
     }
 }

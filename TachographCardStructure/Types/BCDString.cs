@@ -41,17 +41,21 @@ namespace TachographCardStructure.Types
             }
         } 
 
-        public void SetNumber(int number)
+        public void SetNumber(string number)
         {
-            var s_number = number.ToString();
-            if (s_number.Length % 2 != 0) s_number = "0" + s_number;
-            var partial = s_number.Length / bytes.Length;
+            if (number.Length % 2 != 0) number = "0" + number;
+            var partial = number.Length / bytes.Length;
 
-            for(int i = 0; i< bytes.Length; i++)
+            for (int i = 0; i < bytes.Length; i++)
             {
-                var num = s_number.Substring(partial * i, partial);
+                var num = number.Substring(partial * i, partial);
                 this[i] = Convert.ToInt32(num);
             }
+        }
+
+        public void SetNumber(int number)
+        {
+            SetNumber(number.ToString());
         }
 
         public override string ToString()

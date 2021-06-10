@@ -7,26 +7,35 @@ namespace TachographCardStructure
 {
     public class CardChipIdentification : MainFile
     {
-        public byte[] IcSerialNumber { get; set; } = new byte[4]; // 4bytes
-        public byte[] ICManufacturingReferences { get; set; } = new byte[4]; // 4bytes
+        public uint IcSerialNumber { get; set; }  // 4bytes
+        public uint ICManufacturingReferences { get; set; }  // 4bytes
 
-        public CardChipIdentification() : base(new byte[] { 0x00, 0x05 }, 0x00)
+        public CardChipIdentification(uint serialNumber, uint icManufaturingReferences) : base(new byte[] { 0x00, 0x05 })
         {
-            IcSerialNumber = new byte[]{ 0x24, 0x18, 0x3C, 0x0D };
-            ICManufacturingReferences = new byte[] { 0x52, 0x79, 0x87, 0x15 };
+            IcSerialNumber = serialNumber;
+            ICManufacturingReferences = icManufaturingReferences;
 
         }
         public override ushort GetLength()
         {
-            return (ushort)(IcSerialNumber.Length + ICManufacturingReferences.Length);
+            return Encrypted == 0x01 ? base.GetLength() : (ushort)8;
         }
 
         public override byte[] ToByte()
         {
-            return new List<byte>()
+            var icS_bytes = BitConverter.GetBytes(IcSerialNumber);
+            var icM_bytes = BitConverter.GetBytes(ICManufacturingReferences);
+
+            if(BitConverter.IsLittleEndian)
+            {
+                icS_bytes = icS_bytes.Reverse().ToArray();
+                icM_bytes = icM_bytes.Reverse().ToArray();
+            }
+
+            return Encrypted == 0x01 ? base.ToByte() : new List<byte>()
                 .Concat(base.ToByte())
-                .Concat(IcSerialNumber)
-                .Concat(ICManufacturingReferences)
+                .Concat(icS_bytes)
+                .Concat(icM_bytes)
                 .ToArray();
         }
     }

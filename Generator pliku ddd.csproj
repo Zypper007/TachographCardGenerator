@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FolderBrowserForWPF, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\FolderBrowserForWPF.1.2.0\lib\net472\FolderBrowserForWPF.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -84,6 +87,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileStructureConventer.cs" />
+    <Compile Include="RandomSingleton.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -98,8 +103,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PeopleGenerator.cs" />
-    <Compile Include="Person.cs" />
+    <Compile Include="DriverGenerator.cs" />
+    <Compile Include="Driver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -131,6 +136,13 @@
       <Project>{ab890275-79a8-4fce-890c-c6bab004309b}</Project>
       <Name>api.dane.gov.pl</Name>
     </ProjectReference>
+    <ProjectReference Include="TachographCardStructure\TachographCardStructure.csproj">
+      <Project>{6edee51d-9ad1-4331-8595-20e8c92ec297}</Project>
+      <Name>TachographCardStructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
