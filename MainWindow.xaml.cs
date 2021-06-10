@@ -76,20 +76,29 @@ namespace Generator_pliku_ddd
         {
             var amount = int.Parse(CopiesTB.Text) - Drivers.Count;
 
-            var task = DriverGenerator.Generete(amount > 0 ? (uint)amount : 0, SexFreqSlider.Value);
-            StatusTB.Text = "Generowanie kierowców...";
-
-            await task.ContinueWith(d =>
+            try
             {
-                var gDrivers = d.Result;
+                var task = DriverGenerator.Generete(amount > 0 ? (uint)amount : 0, SexFreqSlider.Value);
+                StatusTB.Text = "Generowanie kierowców...";
 
-                Dispatcher.Invoke(() => { StatusTB.Text = "Wygenerowano " + gDrivers.Count + " kierowców"; });
+                await task.ContinueWith(d =>
+                {
+                    var gDrivers = d.Result;
 
-                Drivers.AddRange(gDrivers);
+                    Dispatcher.Invoke(() => { StatusTB.Text = "Wygenerowano " + gDrivers.Count + " kierowców"; });
 
-                Dispatcher.BeginInvoke((Action)(() =>GenerateFile(Drivers)));
-
-            });
+                    Drivers.AddRange(gDrivers);
+                });
+            } 
+            catch(Exception err)
+            {
+                MessageBox.Show("Nie udało sie wygenerować nowych kierowców", "api.gov.pl", MessageBoxButton.OK, MessageBoxImage.Error);
+                StatusTB.Text = "Błąd api.gov.pl";
+            } 
+            finally
+            {
+                 Dispatcher.BeginInvoke((Action)(() => GenerateFile(Drivers)));
+            }
         }
         private async void GenerateFile(IEnumerable<Driver> Drivers)
         {
