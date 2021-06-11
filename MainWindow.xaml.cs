@@ -4,19 +4,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using FolderBrowserForWPF;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Threading;
 
 namespace Generator_pliku_ddd
 {
@@ -33,13 +25,31 @@ namespace Generator_pliku_ddd
 
         public MainWindow()
         {
+            // ustawienia początkowe aplikacji
             InitializeComponent();
+
+            CopiesTB.Text = Properties.Settings.Default.LastAmount.ToString();
+            SexFreqSlider.Value = Properties.Settings.Default.LastFrequency;
+
             DateFromDP.SelectedDate = DateTime.Today.AddDays(-20);
             DateToDP.SelectedDate = DateTime.Today.AddDays(20);
-            SavePlaceTB.Text = Directory.GetCurrentDirectory();
+
+            var savePath = Properties.Settings.Default.LastPath;
+
+            if(savePath != "")
+            {
+                SavePlaceTB.Text = savePath;
+            }
+            else
+            {
+                var programPath = Directory.GetCurrentDirectory() + @"\Generated Files";
+                if (!Directory.Exists(programPath)) Directory.CreateDirectory(programPath);
+                SavePlaceTB.Text = programPath;
+            }
 
             Drivers.OnCountChange += OnDriversCountChange;
 
+            // Wczytanie kierowców z pliku csv jeśli istnieje
             var DriversPath = Directory.GetCurrentDirectory() + @"\Drivers.csv";
             if (File.Exists(DriversPath))
             {
@@ -63,11 +73,14 @@ namespace Generator_pliku_ddd
 
         }
 
+        // Funkcja na zdarzenie zmiany rozmiaru listy kierowców
         private void OnDriversCountChange(DriversList sender, DriverEventArgs args)
         {
             Dispatcher.Invoke(()=> ExportBtn.IsEnabled = sender.Count > 0 );
         }
 
+        // funkcja odpowiadająca za generowanie kierowców
+        // potem odpala funkcje odpowiadającą za tworzenie plików
         private async void GnerateBtn_Click(object sender, RoutedEventArgs e)
         {
             var self = sender as Button;
@@ -99,6 +112,8 @@ namespace Generator_pliku_ddd
                 Dispatcher.BeginInvoke((Action)(() => GenerateFile(Drivers)));
             }
         }
+
+        // funkcja odpowiadająca za tworzenie plików
         private async void GenerateFile(DriversList Drivers)
         {
             var rand = RandomSingleton.GetInstance();
@@ -131,17 +146,6 @@ namespace Generator_pliku_ddd
             GnerateBtn.IsEnabled = true;
         }
 
-            private void CopiesTB_OnlyInt(object sender, TextCompositionEventArgs e)
-        {
-            if (!OnlyInt.IsMatch(e.Text)) e.Handled = true;
-        }
-
-        private void CopiesTB_TextChange(object sender, TextChangedEventArgs e)
-        {
-            if ((sender as TextBox).Text.Length == 0) GnerateBtn.IsEnabled = false;
-            else GnerateBtn.IsEnabled = true;
-        }
-
         private async void ExportBtn_Click(object sender, RoutedEventArgs e)
         {
             var self = sender as Button;
@@ -169,7 +173,33 @@ namespace Generator_pliku_ddd
             if(dialog.ShowDialog() == true)
             {
                 SavePlaceTB.Text = dialog.FileName;
+                Properties.Settings.Default.LastPath = dialog.FileName;
+                Properties.Settings.Default.Save();
             }
+        }
+
+        private void CopiesTB_OnlyInt(object sender, TextCompositionEventArgs e)
+        {
+            if (!OnlyInt.IsMatch(e.Text)) e.Handled = true;
+        }
+
+
+        private void CopiesTB_TextChange(object sender, TextChangedEventArgs e)
+        {
+            var self = sender as TextBox;
+            if (self.Text.Length == 0) GnerateBtn.IsEnabled = false;
+            else GnerateBtn.IsEnabled = true;
+            Properties.Settings.Default.LastAmount = int.Parse(self.Text);
+            Properties.Settings.Default.Save();
+
+        }
+
+        // zapisywanie wartości SexFrequency
+        private void SexFrequencySaveValue(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            Properties.Settings.Default.LastFrequency = SexFreqSlider.Value;
+            Properties.Settings.Default.Save();
+
         }
     }
 }

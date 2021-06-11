@@ -22,7 +22,7 @@
             <Button x:Name="ExportBtn" IsEnabled="False" FontSize="14" Margin="0,0,0,20" Click="ExportBtn_Click">Eksportuj kierowców</Button>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Style="{StaticResource Section}">
-                <TextBox x:Name="CopiesTB" FontSize="18" Text="200" FontWeight="Bold" MinWidth="100" TextAlignment="Center" TextChanged="CopiesTB_TextChange" PreviewTextInput="CopiesTB_OnlyInt"/>
+                <TextBox x:Name="CopiesTB" FontSize="18" FontWeight="Bold" MinWidth="100" TextAlignment="Center" TextChanged="CopiesTB_TextChange" PreviewTextInput="CopiesTB_OnlyInt"/>
                 <TextBlock FontSize="14" Margin="10,0,0,0" VerticalAlignment="Bottom">kierowców</TextBlock>
             </StackPanel>
 
@@ -38,7 +38,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.ColumnSpan="3" Style="{StaticResource Header}" Text="Losowość imion"/>
                 <TextBlock Grid.Column="0" Grid.Row ="1">Żeńskie</TextBlock>
-                <Slider Grid.Column="1" Grid.Row ="1" Minimum="0" Maximum="1" Value="0.75" TickFrequency="0.01" x:Name="SexFreqSlider"></Slider>
+                <Slider Grid.Column="1" Grid.Row ="1" Minimum="0" Maximum="1" TickFrequency="0.01" x:Name="SexFreqSlider" Thumb.DragCompleted="SexFrequencySaveValue" />
                 <TextBlock Grid.Column="2" Grid.Row ="1" TextAlignment="Right">Męskie</TextBlock>
             </Grid>
 
@@ -56,8 +56,6 @@
                 <TextBlock Grid.Row="1" Grid.Column="0">Data od</TextBlock>
                 <TextBlock Grid.Row="1" Grid.Column="1">Data do</TextBlock>
                 <DatePicker Grid.Row="2" Grid.Column="0" x:Name="DateFromDP"/>
-
-
                 <DatePicker Grid.Row="2" Grid.Column="1" x:Name="DateToDP"/>
             </Grid>
             <Grid Margin="0,20,0,0" >
@@ -70,7 +68,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.ColumnSpan="2"  Style="{StaticResource Header}" Text="Miejsce zapisu plików"/>
-                <TextBox Grid.Row="1" Grid.Column="0" IsReadOnly="True" x:Name="SavePlaceTB" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Text="text" Padding="2,0"/>
+                <TextBox Grid.Row="1" Grid.Column="0" IsReadOnly="True" x:Name="SavePlaceTB" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}" Padding="2,0"/>
                 <Button x:Name="ChocePlaceBtn" Content="Wybierz" Grid.Row="1" Grid.Column="1" Click="ChocePlaceBtn_Click"/>
             </Grid>
         </StackPanel>

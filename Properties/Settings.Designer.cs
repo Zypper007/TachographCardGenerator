@@ -22,5 +22,41 @@ namespace Generator_pliku_ddd.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int LastAmount {
+            get {
+                return ((int)(this["LastAmount"]));
+            }
+            set {
+                this["LastAmount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.75")]
+        public double LastFrequency {
+            get {
+                return ((double)(this["LastFrequency"]));
+            }
+            set {
+                this["LastFrequency"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastPath {
+            get {
+                return ((string)(this["LastPath"]));
+            }
+            set {
+                this["LastPath"] = value;
+            }
+        }
     }
 }
