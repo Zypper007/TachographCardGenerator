@@ -12,7 +12,7 @@
 
         <StatusBar DockPanel.Dock="Bottom" Height="20">
             <StatusBarItem>
-                <TextBlock x:Name="StatusTB" Text="Status"/>
+                <TextBlock x:Name="StatusTB" Text=""/>
             </StatusBarItem>
         </StatusBar>
 

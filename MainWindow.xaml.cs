@@ -25,16 +25,8 @@ namespace Generator_pliku_ddd
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Driver> _drivers = new List<Driver>();
-        private List<Driver> Drivers
-        {
-            get => _drivers;
-            set
-            {
-                _drivers = value;
-                ExportBtn.IsEnabled = value.Count > 0;
-            }
-        } 
+        private DriversList Drivers = new DriversList();
+       
 
         private Regex OnlyInt = new Regex(@"^[0-9]+");
 
@@ -46,7 +38,7 @@ namespace Generator_pliku_ddd
             DateToDP.SelectedDate = DateTime.Today.AddDays(20);
             SavePlaceTB.Text = Directory.GetCurrentDirectory();
 
-
+            Drivers.OnCountChange += OnDriversCountChange;
 
             var DriversPath = Directory.GetCurrentDirectory() + @"\Drivers.csv";
             if (File.Exists(DriversPath))
@@ -71,9 +63,16 @@ namespace Generator_pliku_ddd
 
         }
 
+        private void OnDriversCountChange(DriversList sender, DriverEventArgs args)
+        {
+            Dispatcher.Invoke(()=> ExportBtn.IsEnabled = sender.Count > 0 );
+        }
 
         private async void GnerateBtn_Click(object sender, RoutedEventArgs e)
         {
+            var self = sender as Button;
+            self.IsEnabled = false;
+
             var amount = int.Parse(CopiesTB.Text) - Drivers.Count;
 
             try
@@ -97,20 +96,19 @@ namespace Generator_pliku_ddd
             } 
             finally
             {
-                 Dispatcher.BeginInvoke((Action)(() => GenerateFile(Drivers)));
+                Dispatcher.BeginInvoke((Action)(() => GenerateFile(Drivers)));
             }
         }
-        private async void GenerateFile(IEnumerable<Driver> Drivers)
+        private async void GenerateFile(DriversList Drivers)
         {
             var rand = RandomSingleton.GetInstance();
             var diff = (int)(DateToDP.SelectedDate - DateFromDP.SelectedDate).Value.TotalSeconds;
             var tasks = new List<Task>();
-            int i = 0;
+            int max = int.Parse(CopiesTB.Text);
 
-            foreach (var driver in Drivers)
+            for(int i = 0; i< max; i++)
             {
-                i++;
-
+                var driver = Drivers[i];
                 var downloadDate = DateFromDP.SelectedDate.Value.AddSeconds(rand.Next(0, diff));
                 var bytes = FileStructureConventer.Create(driver, downloadDate).ToArray();
                 var fileName = SavePlaceTB.Text + $"\\C_{downloadDate.ToString("yyyyMMdd")}_{downloadDate.ToString("HHmmss")}_" +
@@ -122,14 +120,15 @@ namespace Generator_pliku_ddd
                 {
                     Dispatcher.Invoke(() =>
                     {
-                        StatusTB.Text = $"Utworzono {i}/{Drivers.Count()} plików";
+                        StatusTB.Text = $"Utworzono {i+1}/{max} plików";
                     });
                 });
             }
 
             Task.WaitAll(tasks.ToArray());
 
-            if (i == Drivers.Count()) Process.Start("explorer.exe", SavePlaceTB.Text);
+            Process.Start("explorer.exe", SavePlaceTB.Text);
+            GnerateBtn.IsEnabled = true;
         }
 
             private void CopiesTB_OnlyInt(object sender, TextCompositionEventArgs e)
@@ -148,12 +147,14 @@ namespace Generator_pliku_ddd
             var self = sender as Button;
             self.IsEnabled = false;
 
+            int max = int.Parse(CopiesTB.Text);
+
             using (var sw = new StreamWriter(Directory.GetCurrentDirectory() + @"\Drivers.csv"))
             {
-                for(var i = 0; i< Drivers.Count; i++)
+                for(var i = 0; i< max; i++)
                 {
                     await sw.WriteLineAsync(Drivers[i].toCSV());
-                    StatusTB.Text = "Eksportowanie kierowców... " + (i + 1) + "/" + Drivers.Count;
+                    StatusTB.Text = "Eksportowanie kierowców... " + (i + 1) + "/" + max;
                 }
 
             }
