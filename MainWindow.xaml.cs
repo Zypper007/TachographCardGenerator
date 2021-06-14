@@ -104,8 +104,8 @@ namespace Generator_pliku_ddd
             } 
             catch(Exception err)
             {
-                MessageBox.Show("Nie udało sie wygenerować nowych kierowców", "api.gov.pl", MessageBoxButton.OK, MessageBoxImage.Error);
-                StatusTB.Text = "Błąd api.gov.pl";
+                MessageBox.Show("Nie wygenerowano nowych kierowców", "api.gov.pl", MessageBoxButton.OK, MessageBoxImage.Information);
+                StatusTB.Text = "Nie wygenerowano nowych kierowców";
             } 
             finally
             {

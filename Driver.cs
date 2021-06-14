@@ -115,8 +115,7 @@ namespace Generator_pliku_ddd
             {
                 "JanszPol P.W.",
                 "WiertPol P.W.",
-                "GruzPol P.W.",
-                "Pudzian P.W."
+                "GruzPol P.W."
             };
         }
 

@@ -105,7 +105,7 @@ namespace Generator_pliku_ddd
             Identification EF_dentification = new Identification(
                 new CardIdentification(
                     new NO1byte(40),
-                    new CardNumber(driver.Personals.ID, "0", "0"),
+                    new CardNumber(driver.Personals.ID + "000", "0", "0"),
                     new Name(CodePages.ISO_8859_1, driver.DriverCardInfo.Company),
                     new TimeReal(driver.DriverCardInfo.ReleaseDate),
                     new TimeReal(driver.DriverCardInfo.ReleaseDate),
@@ -246,7 +246,6 @@ namespace Generator_pliku_ddd
             });
 
             return EF_ICC.ToByte()
-                .Concat(EF_IC.ToByte())
                 .Concat(EF_IC.ToByte())
                 .Concat(CardCertyficate.ToByte())
                 .Concat(CA_Certificate.ToByte())
