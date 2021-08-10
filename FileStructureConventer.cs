@@ -102,10 +102,10 @@ namespace Generator_pliku_ddd
                 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
             });
 
-            Identification EF_dentification = new Identification(
+            Identification EF_identification = new Identification(
                 new CardIdentification(
                     new NO1byte(40),
-                    new CardNumber(driver.Personals.ID + "000", "0", "0"),
+                    new CardNumber("1" + driver.Personals.ID + "00", "0", "0"),
                     new Name(CodePages.ISO_8859_1, driver.DriverCardInfo.Company),
                     new TimeReal(driver.DriverCardInfo.ReleaseDate),
                     new TimeReal(driver.DriverCardInfo.ReleaseDate),
@@ -174,7 +174,7 @@ namespace Generator_pliku_ddd
             });
 
             CardFaultsData EF_FaultsData = new CardFaultsData(noOfFaultsPerType);
-            CardFaultsData EFFaultsDataENC = new CardFaultsData(new byte[128] {
+            CardFaultsData EF_FaultsDataENC = new CardFaultsData(new byte[128] {
                 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
                 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
                 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
@@ -251,7 +251,7 @@ namespace Generator_pliku_ddd
                 .Concat(CA_Certificate.ToByte())
                 .Concat(DriverCardApplicationIdentification.ToByte())
                 .Concat(DriverCardApplicationIdentificationENC.ToByte())
-                .Concat(EF_dentification.ToByte())
+                .Concat(EF_identification.ToByte())
                 .Concat(EF_identyficationENC.ToByte())
                 .Concat(EF_CardDownload.ToByte())
                 .Concat(EF_CardDownloadENC.ToByte())
@@ -260,7 +260,7 @@ namespace Generator_pliku_ddd
                 .Concat(EF_EventData.ToByte())
                 .Concat(EF_EventDataENC.ToByte())
                 .Concat(EF_FaultsData.ToByte())
-                .Concat(EFFaultsDataENC.ToByte())
+                .Concat(EF_FaultsDataENC.ToByte())
                 .Concat(EF_DriverActivity.ToByte())
                 .Concat(EF_DriverActivityENC.ToByte())
                 .Concat(EF_VehiclesUsed.ToByte())
